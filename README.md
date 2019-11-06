@@ -1,10 +1,21 @@
 # GitHub Runner
 
+[![Docker Pulls](https://img.shields.io/docker/pulls/tcardonne/github-runner)](https://hub.docker.com/r/tcardonne/github-runner)
+
+-----------
 GitHub allows developpers to run GitHub Actions workflows on your own runners.
 This Docker image allows you to create your own runner on Docker.
 
-Note : As stated in the [documentation](https://help.github.com/en/github/automating-your-workflow-with-github-actions/about-self-hosted-runners) :
+This Docker Image is still under development: the linking process works but as it uses the Debian Buster image as a base, some actions may not work.
+My goal with this image is to be able to build Docker images (probably using Docker siblings or Docker in Docker).
+
+For now, there is only a Debian Buster image, but I may add more variants in the future.
+
+## Important notes
+As stated in the [documentation](https://help.github.com/en/github/automating-your-workflow-with-github-actions/about-self-hosted-runners) :
 > "GitHub Actions is currently in limited public beta and is subject to change. We strongly recommend that you do not use this feature for high-value workflows and content during the beta period".
+
+Also, GitHub [recommends](https://help.github.com/en/github/automating-your-workflow-with-github-actions/about-self-hosted-runners#self-hosted-runner-security-with-public-repositories) that you do **NOT** use self-hosted runners with public repositories, for security reasons.
 
 ## Usage
 
@@ -30,6 +41,7 @@ The following environment variables allows you to control the configuration para
 
 ## Using docker-compose.yml
 
+In `docker-compose.yml` :
 ```yaml
 version: "3.6"
 
@@ -40,4 +52,10 @@ services:
         RUNNER_NAME: "my-runner"
         RUNNER_REPOSITORY_URL: ${RUNNER_REPOSITORY_URL}
         RUNNER_TOKEN: ${RUNNER_TOKEN}
+```
+
+You can create a `.env` to provide environment variables when using docker-compose :
+```
+RUNNER_REPOSITORY_URL=https://github.com/your_url/your_repo
+RUNNER_TOKEN=the_runner_token
 ```
