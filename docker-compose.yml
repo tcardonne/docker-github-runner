@@ -1,0 +1,9 @@
+version: "3.6"
+
+services:
+    runner:
+      image: tcardonne/github-runner
+      environment:
+        RUNNER_NAME: "my-runner"
+        RUNNER_REPOSITORY_URL: ${RUNNER_REPOSITORY_URL}
+        RUNNER_TOKEN: ${RUNNER_TOKEN}
