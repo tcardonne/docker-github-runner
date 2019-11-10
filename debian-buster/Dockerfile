@@ -20,11 +20,26 @@ LABEL maintainer="me@tcardonne.fr" \
     org.label-schema.docker.cmd="docker run -it tcardonne/github-runner:latest"
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
-    apt-get install -y curl git && \
-    rm -rf /var/lib/apt/lists/* && \
+    apt-get install -y \
+        curl \
+        apt-transport-https \
+        ca-certificates \
+        curl \
+        software-properties-common \
+        git \
+        sudo
+
+# Install Docker CLI
+RUN curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
+
+RUN rm -rf /var/lib/apt/lists/* && \
     apt-get clean
 
-RUN useradd -ms /bin/bash runner
+RUN useradd -ms /bin/bash runner && \
+    usermod -aG docker runner && \
+    usermod -aG sudo runner && \
+    echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
 WORKDIR /home/runner
 
 RUN curl -O https://githubassets.azureedge.net/runners/${GH_RUNNER_VERSION}/actions-runner-linux-x64-${GH_RUNNER_VERSION}.tar.gz \
