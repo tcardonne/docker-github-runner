@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Ensure Docker socket
+if [[ -e "/var/run/docker.sock" ]]; then
+    sudo chgrp docker /var/run/docker.sock
+fi
+
 if [[ "$@" == "bash" ]]; then
     exec $@
 fi

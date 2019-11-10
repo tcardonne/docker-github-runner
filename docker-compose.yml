@@ -7,3 +7,5 @@ services:
         RUNNER_NAME: "my-runner"
         RUNNER_REPOSITORY_URL: ${RUNNER_REPOSITORY_URL}
         RUNNER_TOKEN: ${RUNNER_TOKEN}
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
