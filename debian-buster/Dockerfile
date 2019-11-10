@@ -1,6 +1,7 @@
 FROM debian:buster
 
 ARG GH_RUNNER_VERSION="2.160.0"
+ARG DOCKER_COMPOSE_VERSION="1.24.1"
 
 ENV RUNNER_NAME=""
 ENV RUNNER_WORK_DIRECTORY="_work"
@@ -31,6 +32,10 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
 
 # Install Docker CLI
 RUN curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
+
+# Install Docker-Compose
+RUN curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && \
+    chmod +x /usr/local/bin/docker-compose
 
 RUN rm -rf /var/lib/apt/lists/* && \
     apt-get clean
