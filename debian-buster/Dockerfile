@@ -28,7 +28,11 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
         curl \
         software-properties-common \
         git \
-        sudo
+        sudo \
+        supervisor
+
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+RUN chmod 644 /etc/supervisor/conf.d/supervisord.conf
 
 # Install Docker CLI
 RUN curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
@@ -56,6 +60,6 @@ RUN curl -O https://githubassets.azureedge.net/runners/${GH_RUNNER_VERSION}/acti
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["./run.sh"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
 
 USER runner
