@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Ensure Docker socket
+# Ensure Docker socket is owned by docker group
 if [[ -e "/var/run/docker.sock" ]]; then
     sudo chgrp docker /var/run/docker.sock
 fi
@@ -29,10 +29,19 @@ if [[ -z $RUNNER_REPOSITORY_URL ]]; then
     exit 1
 fi
 
+if [[ -z $RUNNER_REPLACE_EXISTING ]]; then
+    export RUNNER_REPLACE_EXISTING="true"
+fi
+
+CONFIG_INPUT="\n\n\n"
+if [ "$(echo $RUNNER_REPLACE_EXISTING | tr '[:upper:]' '[:lower:]')" == "true" ]; then
+	CONFIG_INPUT="Y\n\n"
+fi
+
 if [[ -f ".runner" ]]; then
     echo "Runner already configured. Skipping config."
 else
-    ./config.sh \
+    echo -ne $CONFIG_INPUT | ./config.sh \
         --url $RUNNER_REPOSITORY_URL \
         --token $RUNNER_TOKEN \
         --agent $RUNNER_NAME \

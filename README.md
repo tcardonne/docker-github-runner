@@ -6,15 +6,11 @@
 GitHub allows developpers to run GitHub Actions workflows on your own runners.
 This Docker image allows you to create your own runners on Docker.
 
-This Docker Image is still under development: the linking process works but as it uses the Debian Buster image as a base, some actions may not work.
-
-For now, there is only a Debian Buster image, but I may add more variants in the future.
+For now, there is only a Debian Buster image, but I may add more variants in the future. Feel free to create an issue if you want another base image.
 
 ## Important notes
-As stated in the [documentation](https://help.github.com/en/github/automating-your-workflow-with-github-actions/about-self-hosted-runners) :
-> "GitHub Actions is currently in limited public beta and is subject to change. We strongly recommend that you do not use this feature for high-value workflows and content during the beta period".
 
-Also, GitHub [recommends](https://help.github.com/en/github/automating-your-workflow-with-github-actions/about-self-hosted-runners#self-hosted-runner-security-with-public-repositories) that you do **NOT** use self-hosted runners with public repositories, for security reasons.
+GitHub [recommends](https://help.github.com/en/github/automating-your-workflow-with-github-actions/about-self-hosted-runners#self-hosted-runner-security-with-public-repositories) that you do **NOT** use self-hosted runners with public repositories, for security reasons.
 
 ## Usage
 
@@ -51,12 +47,13 @@ The following environment variables allows you to control the configuration para
 | RUNNER_TOKEN | Personal Access Token provided by GitHub | Required
 | RUNNER_WORK_DIRECTORY | Runner's work directory | `"_work"`
 | RUNNER_NAME | Name of the runner displayed in the GitHub UI | Hostname of the container
+| RUNNER_REPLACE_EXISTING | `"true"` will replace existing runner with the same name, `"false"` will use a random name if there is conflict | `"true"`
 
 ## Using docker-compose.yml
 
 In `docker-compose.yml` :
 ```yaml
-version: "3.6"
+version: "3.7"
 
 services:
     runner:
@@ -74,3 +71,8 @@ You can create a `.env` to provide environment variables when using docker-compo
 RUNNER_REPOSITORY_URL=https://github.com/your_url/your_repo
 RUNNER_TOKEN=the_runner_token
 ```
+
+### Runner auto-update behavior
+
+The GitHub runner (the binary) will update itself when receiving a job, if a new release is available.
+In order to allow the runner to exit and restart by itself, the binary is started by a supervisord process.
