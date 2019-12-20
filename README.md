@@ -14,7 +14,7 @@ GitHub [recommends](https://help.github.com/en/github/automating-your-workflow-w
 
 ## Usage
 
-## Basic usage
+### Basic usage
 Use the following command to start listening for jobs:
 ```shell
 docker run -it --name my-runner \
@@ -24,7 +24,7 @@ docker run -it --name my-runner \
     tcardonne/github-runner
 ```
 
-## Using Docker inside your Actions
+### Using Docker inside your Actions
 
 If you want to use Docker inside your runner (ie, build images in a workflow), you can enable Docker siblings by binding the host Docker daemon socket. Please keep in mind that doing this gives your actions full control on the Docker daemon.
 
@@ -37,19 +37,7 @@ docker run -it --name my-runner \
     tcardonne/github-runner
 ```
 
-## Environment variables
-
-The following environment variables allows you to control the configuration parameters.
-
-| Name | Description | Default value |
-|------|---------------|-------------|
-| RUNNER_REPOSITORY_URL | The runner will be linked to this repository URL | Required |
-| RUNNER_TOKEN | Personal Access Token provided by GitHub | Required
-| RUNNER_WORK_DIRECTORY | Runner's work directory | `"_work"`
-| RUNNER_NAME | Name of the runner displayed in the GitHub UI | Hostname of the container
-| RUNNER_REPLACE_EXISTING | `"true"` will replace existing runner with the same name, `"false"` will use a random name if there is conflict | `"true"`
-
-## Using docker-compose.yml
+### Using docker-compose.yml
 
 In `docker-compose.yml` :
 ```yaml
@@ -72,7 +60,19 @@ RUNNER_REPOSITORY_URL=https://github.com/your_url/your_repo
 RUNNER_TOKEN=the_runner_token
 ```
 
-### Runner auto-update behavior
+## Environment variables
+
+The following environment variables allows you to control the configuration parameters.
+
+| Name | Description | Default value |
+|------|---------------|-------------|
+| RUNNER_REPOSITORY_URL | The runner will be linked to this repository URL | Required |
+| RUNNER_TOKEN | Personal Access Token provided by GitHub | Required
+| RUNNER_WORK_DIRECTORY | Runner's work directory | `"_work"`
+| RUNNER_NAME | Name of the runner displayed in the GitHub UI | Hostname of the container
+| RUNNER_REPLACE_EXISTING | `"true"` will replace existing runner with the same name, `"false"` will use a random name if there is conflict | `"true"`
+
+## Runner auto-update behavior
 
 The GitHub runner (the binary) will update itself when receiving a job, if a new release is available.
 In order to allow the runner to exit and restart by itself, the binary is started by a supervisord process.
