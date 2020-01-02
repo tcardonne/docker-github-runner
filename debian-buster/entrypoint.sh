@@ -44,7 +44,7 @@ else
     echo -ne $CONFIG_INPUT | ./config.sh \
         --url $RUNNER_REPOSITORY_URL \
         --token $RUNNER_TOKEN \
-        --agent $RUNNER_NAME \
+        --name $RUNNER_NAME \
         --work $RUNNER_WORK_DIRECTORY
 fi
 
