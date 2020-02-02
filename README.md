@@ -3,7 +3,7 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/tcardonne/github-runner)](https://hub.docker.com/r/tcardonne/github-runner)
 
 -----------
-GitHub allows developpers to run GitHub Actions workflows on your own runners.
+GitHub allows developers to run GitHub Actions workflows on your own runners.
 This Docker image allows you to create your own runners on Docker.
 
 For now, there is only a Debian Buster image, but I may add more variants in the future. Feel free to create an issue if you want another base image.
