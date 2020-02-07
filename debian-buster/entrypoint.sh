@@ -33,19 +33,21 @@ if [[ -z $RUNNER_REPLACE_EXISTING ]]; then
     export RUNNER_REPLACE_EXISTING="true"
 fi
 
-CONFIG_INPUT="\n\n\n"
+CONFIG_OPTS=""
 if [ "$(echo $RUNNER_REPLACE_EXISTING | tr '[:upper:]' '[:lower:]')" == "true" ]; then
-	CONFIG_INPUT="Y\n\n"
+	CONFIG_OPTS="--replace"
 fi
 
 if [[ -f ".runner" ]]; then
     echo "Runner already configured. Skipping config."
 else
-    echo -ne $CONFIG_INPUT | ./config.sh \
+    ./config.sh \
         --url $RUNNER_REPOSITORY_URL \
         --token $RUNNER_TOKEN \
         --name $RUNNER_NAME \
-        --work $RUNNER_WORK_DIRECTORY
+        --work $RUNNER_WORK_DIRECTORY \
+        $CONFIG_OPTS \
+        --unattended
 fi
 
 exec "$@"
