@@ -1,6 +1,6 @@
 FROM debian:buster
 
-ARG GH_RUNNER_VERSION="2.164.0"
+ARG GH_RUNNER_VERSION
 ARG DOCKER_COMPOSE_VERSION="1.24.1"
 
 ENV RUNNER_NAME=""
@@ -51,7 +51,8 @@ RUN useradd -ms /bin/bash runner && \
 
 WORKDIR /home/runner
 
-RUN curl -L -O https://github.com/actions/runner/releases/download/v${GH_RUNNER_VERSION}/actions-runner-linux-x64-${GH_RUNNER_VERSION}.tar.gz \
+RUN GH_RUNNER_VERSION=${GH_RUNNER_VERSION:-$(curl --silent "https://api.github.com/repos/actions/runner/releases/latest" | grep tag_name | sed -E 's/.*"v([^"]+)".*/\1/')} \
+    && curl -L -O https://github.com/actions/runner/releases/download/v${GH_RUNNER_VERSION}/actions-runner-linux-x64-${GH_RUNNER_VERSION}.tar.gz \
     && tar -zxf actions-runner-linux-x64-${GH_RUNNER_VERSION}.tar.gz \
     && rm -f actions-runner-linux-x64-${GH_RUNNER_VERSION}.tar.gz \
     && ./bin/installdependencies.sh \
