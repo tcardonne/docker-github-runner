@@ -1,4 +1,4 @@
-FROM debian:buster
+FROM debian:buster-slim
 
 ARG GH_RUNNER_VERSION
 ARG DOCKER_COMPOSE_VERSION="1.24.1"
