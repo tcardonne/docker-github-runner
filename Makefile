@@ -14,3 +14,6 @@ build: ## Build the image
 
 shell: ## Creates a shell inside the container for debug purposes
 	docker run -it $(APP_NAME) bash
+
+shell-compose: ## Creates a shell inside the docker-compose service for debug purposes
+	docker-compose run --rm runner bash

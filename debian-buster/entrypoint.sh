@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# Ensure Docker socket is owned by docker group
-if [[ -e "/var/run/docker.sock" ]]; then
-    sudo chgrp docker /var/run/docker.sock
-fi
-
 if [[ "$@" == "bash" ]]; then
     exec $@
 fi

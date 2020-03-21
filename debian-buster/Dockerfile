@@ -7,6 +7,7 @@ ENV RUNNER_NAME=""
 ENV RUNNER_WORK_DIRECTORY="_work"
 ENV RUNNER_TOKEN=""
 ENV RUNNER_REPOSITORY_URL=""
+ENV RUNNER_ALLOW_RUNASROOT=true
 
 # Labels.
 LABEL maintainer="me@tcardonne.fr" \
@@ -44,10 +45,7 @@ RUN curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-c
 RUN rm -rf /var/lib/apt/lists/* && \
     apt-get clean
 
-RUN useradd -ms /bin/bash runner && \
-    usermod -aG docker runner && \
-    usermod -aG sudo runner && \
-    echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+RUN mkdir -p /home/runner
 
 WORKDIR /home/runner
 
@@ -56,11 +54,9 @@ RUN GH_RUNNER_VERSION=${GH_RUNNER_VERSION:-$(curl --silent "https://api.github.c
     && tar -zxf actions-runner-linux-x64-${GH_RUNNER_VERSION}.tar.gz \
     && rm -f actions-runner-linux-x64-${GH_RUNNER_VERSION}.tar.gz \
     && ./bin/installdependencies.sh \
-    && chown -R runner: /home/runner
+    && chown -R root: /home/runner
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
-
-USER runner
