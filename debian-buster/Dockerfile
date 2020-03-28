@@ -8,6 +8,7 @@ ENV RUNNER_WORK_DIRECTORY="_work"
 ENV RUNNER_TOKEN=""
 ENV RUNNER_REPOSITORY_URL=""
 ENV RUNNER_ALLOW_RUNASROOT=true
+ENV GITHUB_ACCESS_TOKEN=""
 
 # Labels.
 LABEL maintainer="me@tcardonne.fr" \
@@ -30,7 +31,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
         software-properties-common \
         git \
         sudo \
-        supervisor
+        supervisor \
+        jq
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 RUN chmod 644 /etc/supervisor/conf.d/supervisord.conf

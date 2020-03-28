@@ -19,7 +19,7 @@ Use the following command to start listening for jobs:
 ```shell
 docker run -it --name my-runner \
     -e RUNNER_NAME=my-runner \
-    -e RUNNER_TOKEN=token \
+    -e GITHUB_ACCESS_TOKEN=token \
     -e RUNNER_REPOSITORY_URL=https://github.com/... \
     tcardonne/github-runner
 ```
@@ -31,7 +31,7 @@ If you want to use Docker inside your runner (ie, build images in a workflow), y
 ```shell
 docker run -it --name my-runner \
     -e RUNNER_NAME=my-runner \
-    -e RUNNER_TOKEN=token \
+    -e GITHUB_ACCESS_TOKEN=token \
     -e RUNNER_REPOSITORY_URL=https://github.com/... \
     -v /var/run/docker.sock:/var/run/docker.sock \
     tcardonne/github-runner
@@ -49,7 +49,7 @@ services:
       environment:
         RUNNER_NAME: "my-runner"
         RUNNER_REPOSITORY_URL: ${RUNNER_REPOSITORY_URL}
-        RUNNER_TOKEN: ${RUNNER_TOKEN}
+        GITHUB_ACCESS_TOKEN: ${GITHUB_ACCESS_TOKEN}
       volumes:
         - /var/run/docker.sock:/var/run/docker.sock
 ```
@@ -57,7 +57,7 @@ services:
 You can create a `.env` to provide environment variables when using docker-compose :
 ```
 RUNNER_REPOSITORY_URL=https://github.com/your_url/your_repo
-RUNNER_TOKEN=the_runner_token
+GITHUB_ACCESS_TOKEN=the_runner_token
 ```
 
 ## Environment variables
@@ -67,7 +67,8 @@ The following environment variables allows you to control the configuration para
 | Name | Description | Default value |
 |------|---------------|-------------|
 | RUNNER_REPOSITORY_URL | The runner will be linked to this repository URL | Required |
-| RUNNER_TOKEN | Personal Access Token provided by GitHub | Required
+| GITHUB_ACCESS_TOKEN | Personal Access Token created on [your settings page](https://github.com/settings/tokens) with `repo` scole. Used to dynamically fetch a new runner token (recommended). | Required if `RUNNER_TOKEN` is not provided.
+| RUNNER_TOKEN | Runner token provided by GitHub in the Actions page. These tokens are valid for a short period. | Required if `GITHUB_ACCESS_TOKEN` is not provided
 | RUNNER_WORK_DIRECTORY | Runner's work directory | `"_work"`
 | RUNNER_NAME | Name of the runner displayed in the GitHub UI | Hostname of the container
 | RUNNER_REPLACE_EXISTING | `"true"` will replace existing runner with the same name, `"false"` will use a random name if there is conflict | `"true"`
