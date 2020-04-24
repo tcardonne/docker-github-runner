@@ -33,7 +33,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
         sudo \
         supervisor \
         jq \
-        iputils-ping
+        iputils-ping \
+        build-essential
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 RUN chmod 644 /etc/supervisor/conf.d/supervisord.conf
