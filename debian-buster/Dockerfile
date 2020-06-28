@@ -1,5 +1,6 @@
 FROM debian:buster-slim
 
+ARG GIT_VERSION="2.26.2"
 ARG GH_RUNNER_VERSION
 ARG DOCKER_COMPOSE_VERSION="1.24.1"
 
@@ -29,12 +30,15 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
         ca-certificates \
         curl \
         software-properties-common \
-        git \
         sudo \
         supervisor \
         jq \
         iputils-ping \
-        build-essential
+        build-essential \
+        zlib1g-dev \
+        gettext \
+        liblttng-ust0 \
+        libcurl4-openssl-dev
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 RUN chmod 644 /etc/supervisor/conf.d/supervisord.conf
@@ -46,8 +50,13 @@ RUN curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
 RUN curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && \
     chmod +x /usr/local/bin/docker-compose
 
-RUN rm -rf /var/lib/apt/lists/* && \
-    apt-get clean
+RUN cd /tmp && \
+    curl -sL https://www.kernel.org/pub/software/scm/git/git-${GIT_VERSION}.tar.gz -o git.tgz && \
+    tar zxf git.tgz  && \
+    cd git-${GIT_VERSION}  && \
+    ./configure --prefix=/usr  && \
+    make  && \
+    make install
 
 RUN mkdir -p /home/runner
 
@@ -58,7 +67,10 @@ RUN GH_RUNNER_VERSION=${GH_RUNNER_VERSION:-$(curl --silent "https://api.github.c
     && tar -zxf actions-runner-linux-x64-${GH_RUNNER_VERSION}.tar.gz \
     && rm -f actions-runner-linux-x64-${GH_RUNNER_VERSION}.tar.gz \
     && ./bin/installdependencies.sh \
-    && chown -R root: /home/runner
+    && chown -R root: /home/runner \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /tmp/* \
+    && apt-get clean
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
