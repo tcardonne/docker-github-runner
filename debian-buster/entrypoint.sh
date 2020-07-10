@@ -33,6 +33,10 @@ if [ "$(echo $RUNNER_REPLACE_EXISTING | tr '[:upper:]' '[:lower:]')" == "true" ]
 	CONFIG_OPTS="--replace"
 fi
 
+if [[ -n $RUNNER_LABELS ]]; then
+    CONFIG_OPTS="${CONFIG_OPTS} --labels ${RUNNER_LABELS}"
+fi
+
 if [[ -f ".runner" ]]; then
     echo "Runner already configured. Skipping config."
 else
