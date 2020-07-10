@@ -75,6 +75,7 @@ The following environment variables allows you to control the configuration para
 | RUNNER_TOKEN | Runner token provided by GitHub in the Actions page. These tokens are valid for a short period. | Required if `GITHUB_ACCESS_TOKEN` is not provided
 | RUNNER_WORK_DIRECTORY | Runner's work directory | `"_work"`
 | RUNNER_NAME | Name of the runner displayed in the GitHub UI | Hostname of the container
+| RUNNER_LABELS | Extra labels in addition to the default: 'self-hosted,Linux,X64' (based on your OS and architecture) | `""`
 | RUNNER_REPLACE_EXISTING | `"true"` will replace existing runner with the same name, `"false"` will use a random name if there is conflict | `"true"`
 
 ## Runner Token
