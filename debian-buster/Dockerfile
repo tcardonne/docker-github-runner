@@ -13,6 +13,7 @@ ENV RUNNER_REPOSITORY_URL=""
 ENV RUNNER_LABELS=""
 ENV RUNNER_ALLOW_RUNASROOT=true
 ENV GITHUB_ACCESS_TOKEN=""
+ENV AGENT_TOOLSDIRECTORY=/opt/hostedtoolcache
 
 # Labels.
 LABEL maintainer="me@tcardonne.fr" \
@@ -61,7 +62,7 @@ RUN cd /tmp && \
     make  && \
     make install
 
-RUN mkdir -p /home/runner
+RUN mkdir -p /home/runner ${AGENT_TOOLSDIRECTORY}
 
 WORKDIR /home/runner
 
@@ -79,3 +80,4 @@ COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+
