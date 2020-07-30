@@ -1,4 +1,5 @@
-FROM debian:buster-slim
+ARG FROM=debian:buster-slim
+FROM ${FROM}
 
 ARG GIT_VERSION="2.26.2"
 ARG GH_RUNNER_VERSION
