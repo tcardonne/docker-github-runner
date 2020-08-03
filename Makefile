@@ -10,7 +10,7 @@ help: ## This help.
 .DEFAULT_GOAL := help
 
 build: ## Build the image
-	docker build -t $(APP_NAME) debian-buster
+	docker build -t $(APP_NAME) docker
 
 shell: ## Creates a shell inside the container for debug purposes
 	docker run -it $(APP_NAME) bash
