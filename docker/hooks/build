@@ -1,0 +1,19 @@
+#! /usr/bin/env bash
+set -ex
+
+# This overrides Docker Hub's build command in order to specify the base image
+# as build argument. For more information on build hooks and environment
+# variables, see: https://docs.docker.com/docker-hub/builds/advanced/
+
+TAG=${IMAGE_NAME##*:}
+if [[ $TAG == latest ]]; then
+    TAG=debian-buster-slim
+fi
+
+# Replace first '-' by ':'
+FROM=${TAG/-/:}
+
+docker build . \
+    --build-arg FROM=$FROM \
+    -f ${DOCKERFILE_PATH:-Dockerfile} \
+    -t $IMAGE_NAME
