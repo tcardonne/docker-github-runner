@@ -7,7 +7,7 @@ set -ex
 
 # DOCKER_TAG can be : latest, ubuntu-20.04, v1.0.0, v1.0.0-ubuntu-20.04
 
-if [[ $DOCKER_TAG =~ "^(latest|v[0-9]+\.[0-9]+\.[0-9]+)$" ]]; then
+if [[ $DOCKER_TAG =~ ^(latest|v[0-9]+\.[0-9]+\.[0-9]+)$ ]]; then
     TAG=debian-buster-slim
 else
     # Remove vX.X.X- suffix
