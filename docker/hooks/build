@@ -5,12 +5,17 @@ set -ex
 # as build argument. For more information on build hooks and environment
 # variables, see: https://docs.docker.com/docker-hub/builds/advanced/
 
-TAG=${IMAGE_NAME##*:}
-if [[ $TAG == latest ]]; then
+# DOCKER_TAG can be : latest, ubuntu-20.04, v1.0.0, v1.0.0-ubuntu-20.04
+
+if [[ $DOCKER_TAG =~ "^(latest|v[0-9]+\.[0-9]+\.[0-9]+)$" ]]; then
     TAG=debian-buster-slim
+else
+    # Remove vX.X.X- suffix
+    TAG=$(echo $DOCKER_TAG | sed 's/v[0-9]\+.[0-9]\+.[0-9]\+-//')
 fi
 
 # Replace first '-' by ':'
+# ie, ubuntu-20.04 will be ubuntu:20.04 (image name)
 FROM=${TAG/-/:}
 
 docker build . \
