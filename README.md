@@ -6,7 +6,7 @@
 GitHub allows developers to run GitHub Actions workflows on your own runners.
 This Docker image allows you to create your own runners on Docker.
 
-For now, there are only Debian Buster and Ubuntu Focal images, but I may add more variants in the future. Feel free to create an issue if you want another base image.
+For now, there are only Debian Buster (tagged with `latest` and `vX.Y.Z`) and Ubuntu Focal (tagged with `ubuntu-20.04` and `vX.Y.Z-ubuntu-20.04`) images, but I may add more variants in the future. Feel free to create an issue if you want another base image.
 
 ## Important notes
 
