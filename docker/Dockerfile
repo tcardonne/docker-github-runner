@@ -30,9 +30,9 @@ LABEL maintainer="me@tcardonne.fr" \
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     apt-get install -y \
         curl \
+        unzip \
         apt-transport-https \
         ca-certificates \
-        curl \
         software-properties-common \
         sudo \
         supervisor \
@@ -42,25 +42,32 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
         zlib1g-dev \
         gettext \
         liblttng-ust0 \
-        libcurl4-openssl-dev
+        libcurl4-openssl-dev && \
+    rm -rf /var/lib/apt/lists/* && \
+    apt-get clean
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 RUN chmod 644 /etc/supervisor/conf.d/supervisord.conf
 
 # Install Docker CLI
-RUN curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
+RUN curl -fsSL https://get.docker.com -o- | sh && \
+    rm -rf /var/lib/apt/lists/* && \
+    apt-get clean
 
 # Install Docker-Compose
-RUN curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && \
+RUN curl -L -o /usr/local/bin/docker-compose \
+    "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" && \
     chmod +x /usr/local/bin/docker-compose
 
 RUN cd /tmp && \
-    curl -sL https://www.kernel.org/pub/software/scm/git/git-${GIT_VERSION}.tar.gz -o git.tgz && \
+    curl -sL -o git.tgz \
+    https://www.kernel.org/pub/software/scm/git/git-${GIT_VERSION}.tar.gz && \
     tar zxf git.tgz  && \
     cd git-${GIT_VERSION}  && \
     ./configure --prefix=/usr  && \
-    make  && \
-    make install
+    make && \
+    make install && \
+    rm -rf /tmp/*
 
 RUN mkdir -p /home/runner ${AGENT_TOOLSDIRECTORY}
 
@@ -73,11 +80,9 @@ RUN GH_RUNNER_VERSION=${GH_RUNNER_VERSION:-$(curl --silent "https://api.github.c
     && ./bin/installdependencies.sh \
     && chown -R root: /home/runner \
     && rm -rf /var/lib/apt/lists/* \
-    && rm -rf /tmp/* \
     && apt-get clean
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
-
