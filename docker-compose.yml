@@ -2,11 +2,9 @@ version: "3.7"
 
 services:
     runner:
-      image: tcardonne/github-runner:latest
+      image: dariopad/github-agent-php:latest
       environment:
-        RUNNER_NAME: "my-runner"
+        RUNNER_NAME: "github-agent-docker"
         RUNNER_REPOSITORY_URL: ${RUNNER_REPOSITORY_URL}
         #RUNNER_ORGANIZATION_URL: ${RUNNER_ORGANIZATION_URL}
         GITHUB_ACCESS_TOKEN: ${GITHUB_ACCESS_TOKEN}
-      volumes:
-        - /var/run/docker.sock:/var/run/docker.sock

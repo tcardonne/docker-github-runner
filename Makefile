@@ -1,4 +1,4 @@
-APP_NAME="tcardonne/github-runner"
+APP_NAME="dariopad/github-agent-php"
 
 # HELP
 # This will output the help for each task
@@ -11,6 +11,9 @@ help: ## This help.
 
 build: ## Build the image
 	docker build -t $(APP_NAME) docker
+
+test: ## Test the image
+	docker build -t github-agent-test -f docker/Dockerfile.test docker
 
 shell: ## Creates a shell inside the container for debug purposes
 	docker run -it $(APP_NAME) bash

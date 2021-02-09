@@ -1,6 +1,16 @@
-# GitHub Runner
+# GitHub Agent with Composer and PHP7
 
-[![Docker Pulls](https://img.shields.io/docker/pulls/tcardonne/github-runner)](https://hub.docker.com/r/tcardonne/github-runner)
+[![Docker Pulls](https://img.shields.io/docker/pulls/dariopad/github-agent-php)](https://hub.docker.com/r/dariopad/github-agent-php)
+
+-----------
+As my attempt to create an image from scratch with Alpine has miserably failed due to its incompatibility to Musl Libc, I've decided to fork the good job of other [fellows on GitHub](https://github.com/tcardonne/docker-github-runner). I've changed the base image from debian to ubuntu with PHP7.4 cli and COMPOSER, and removed docker and docker-compose from the image.
+
+This has provided a good agent (Azure DevOps background :)) for basic PHP tasks. 
+This Image is most suitable for Laravelists and PHP developers in general that use Composer as a dependency manager.
+
+This is image can also be used as a PHP CLI management plane if you don't want to install PHP on your host machine!
+
+The rest of this README is from the original maintainer with slight adjustments here and there!
 
 -----------
 GitHub allows developers to run GitHub Actions workflows on your own runners.
@@ -22,7 +32,7 @@ docker run -it --name my-runner \
     -e RUNNER_NAME=my-runner \
     -e GITHUB_ACCESS_TOKEN=token \
     -e RUNNER_REPOSITORY_URL=https://github.com/... \
-    tcardonne/github-runner
+    dariopad/github-agent-php
 ```
 
 ### Using Docker inside your Actions
@@ -35,7 +45,7 @@ docker run -it --name my-runner \
     -e GITHUB_ACCESS_TOKEN=token \
     -e RUNNER_REPOSITORY_URL=https://github.com/... \
     -v /var/run/docker.sock:/var/run/docker.sock \
-    tcardonne/github-runner
+    dariopad/github-agent-php
 ```
 
 ### Using docker-compose.yml
@@ -46,14 +56,13 @@ version: "3.7"
 
 services:
     runner:
-      image: tcardonne/github-runner:latest
+      image: dariopad/github-agent-php:latest
       environment:
-        RUNNER_NAME: "my-runner"
+        RUNNER_NAME: "github-agent-php"
         RUNNER_REPOSITORY_URL: ${RUNNER_REPOSITORY_URL}
         #RUNNER_ORGANIZATION_URL: ${RUNNER_ORGANIZATION_URL}
         GITHUB_ACCESS_TOKEN: ${GITHUB_ACCESS_TOKEN}
-      volumes:
-        - /var/run/docker.sock:/var/run/docker.sock
+
 ```
 
 You can create a `.env` to provide environment variables when using docker-compose :
