@@ -47,6 +47,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     rm -rf /var/lib/apt/lists/* && \
     apt-get clean
 
+COPY init.sh /tmp/init.sh
+RUN chmod +x /tmp/init.sh && /bin/bash /tmp/init.sh
+
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 RUN chmod 644 /etc/supervisor/conf.d/supervisord.conf
 
