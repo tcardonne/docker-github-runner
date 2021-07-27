@@ -74,10 +74,11 @@ RUN mkdir -p /home/runner ${AGENT_TOOLSDIRECTORY}
 
 WORKDIR /home/runner
 
-RUN GH_RUNNER_VERSION=${GH_RUNNER_VERSION:-$(curl --silent "https://api.github.com/repos/actions/runner/releases/latest" | grep tag_name | sed -E 's/.*"v([^"]+)".*/\1/')} \
-    && curl -L -O https://github.com/actions/runner/releases/download/v${GH_RUNNER_VERSION}/actions-runner-linux-x64-${GH_RUNNER_VERSION}.tar.gz \
-    && tar -zxf actions-runner-linux-x64-${GH_RUNNER_VERSION}.tar.gz \
-    && rm -f actions-runner-linux-x64-${GH_RUNNER_VERSION}.tar.gz \
+RUN if [ $(uname -m)  = "armv7l" ]; then GH_RUNNER_NAME="actions-runner-linux-arm"; else GH_RUNNER_NAME="actions-runner-linux-x64"; fi \
+    && GH_RUNNER_VERSION=${GH_RUNNER_VERSION:-$(curl --silent "https://api.github.com/repos/actions/runner/releases/latest" | grep tag_name | sed -E 's/.*"v([^"]+)".*/\1/')} \
+    && curl -L -O https://github.com/actions/runner/releases/download/v${GH_RUNNER_VERSION}/${GH_RUNNER_NAME}-${GH_RUNNER_VERSION}.tar.gz \
+    && tar -zxf ${GH_RUNNER_NAME}-${GH_RUNNER_VERSION}.tar.gz \
+    && rm -f ${GH_RUNNER_NAME}-${GH_RUNNER_VERSION}.tar.gz \
     && ./bin/installdependencies.sh \
     && chown -R root: /home/runner \
     && rm -rf /var/lib/apt/lists/* \
