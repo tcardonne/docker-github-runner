@@ -1,4 +1,12 @@
-# GitHub Runner
+# GitHub Runner - DEPRECATED
+
+**This repository is deprecated and unmaintained.**
+
+Consider using:
+- [myoung34/docker-github-actions-runner](https://github.com/myoung34/docker-github-actions-runner)
+- [actions/actions-runner-controller](https://github.com/actions/actions-runner-controller)
+
+-----------
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/tcardonne/github-runner)](https://hub.docker.com/r/tcardonne/github-runner)
 
