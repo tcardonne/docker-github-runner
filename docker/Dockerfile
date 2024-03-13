@@ -44,6 +44,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
         liblttng-ust0 \
         libcurl4-openssl-dev \
         openssh-client && \
+    curl -sL https://deb.nodesource.com/setup_12.x | sudo bash - && \
+    apt-get install -y nodejs && \
     rm -rf /var/lib/apt/lists/* && \
     apt-get clean
 
