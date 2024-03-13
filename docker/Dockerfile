@@ -30,6 +30,7 @@ LABEL maintainer="me@tcardonne.fr" \
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     apt-get install -y \
         curl \
+        wget \
         unzip \
         apt-transport-https \
         ca-certificates \
