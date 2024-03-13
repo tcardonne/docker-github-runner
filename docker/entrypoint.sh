@@ -56,10 +56,16 @@ else
         _URL="$(echo "${RUNNER_URL/${_PROTO}/}")"
         _PATH="$(echo "${_URL}" | grep / | cut -d/ -f2-)"
 
+        _GITHUB_API="https://api.github.com"
+        if ! [[ ${_URL} =~ "github.com" ]]; then
+            _HOSTNAME="$(echo "${_URL}" | grep / | cut -d / -f1)"
+            _GITHUB_API="https://${_HOSTNAME}/api/v3"
+        fi
+
         RUNNER_TOKEN="$(curl -XPOST -fsSL \
             -H "Authorization: token ${GITHUB_ACCESS_TOKEN}" \
             -H "Accept: application/vnd.github.v3+json" \
-            "https://api.github.com/${SCOPE}/${_PATH}/actions/runners/registration-token" \
+            "${_GITHUB_API}/${SCOPE}/${_PATH}/actions/runners/registration-token" \
             | jq -r '.token')"
     fi
 
